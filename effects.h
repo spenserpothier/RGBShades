@@ -287,7 +287,7 @@ void scrollText(byte message, byte style, CRGB fgColor, CRGB bgColor) {
     for (byte y = 0; y < 5; y++) { // characters are 5 pixels tall
       if (bitRead(bitBuffer[(bitBufferPointer + x) % kMatrixWidth], y) == 1) {
         if (style == RAINBOW) {
-          pixelColor = ColorFromPalette(currentPalette, paletteCycle+y*16, 255);
+          pixelColor = ColorFromPalette(currentPalette, paletteCycle + y * 16, 255);
         } else {
           pixelColor = fgColor;
         }
@@ -325,6 +325,157 @@ void scrollTextOne() {
 }
 
 void scrollTextTwo() {
-  scrollText(2, NORMAL, CRGB::Green, CRGB(0,0,8));
+  scrollText(2, NORMAL, CRGB::Green, CRGB(0, 0, 8));
+}
+
+void eclipseMode() {
+
+  static byte currentFrame = 0;
+  // startup tasks
+  if (effectInit == false) {
+    effectInit = true;
+    effectDelay = 200;
+  }
+
+  
+  const char eclipseBitmap[15][5][9] = {
+    { // Frame 0
+      "00111000",
+      "01111100",
+      "01111100",
+      "01111100",
+      "00111000"
+    },
+    { // Frame 1
+      "00111000",
+      "01111000",
+      "01111000",
+      "01111000",
+      "00111000"
+    },
+    { // Frame 2
+      "00111000",
+      "01110000",
+      "01110000",
+      "01110000",
+      "00111000"
+    },
+    { // Frame 3
+      "00110000",
+      "01100000",
+      "01100000",
+      "01100000",
+      "00110000"
+    },
+    { // Frame 4
+      "00100000",
+      "01000000",
+      "01000000",
+      "01000000",
+      "00100000"
+    },
+    { // Frame 5
+      "00111000",
+      "01000100",
+      "01000100",
+      "01000100",
+      "00111000"
+    },
+    { // Frame 6
+      "00431000",
+      "01000300",
+      "03000100",
+      "01000300",
+      "00234000"
+    },
+    { // Frame 7
+      "00441000",
+      "03000300",
+      "01000400",
+      "03000400",
+      "00413000"
+    },
+    { // Frame 8
+      "00431000",
+      "01000500",
+      "03000100",
+      "02000300",
+      "00534000"
+    },
+    { // Frame 9
+      "00555000",
+      "05000500",
+      "05000500",
+      "05000500",
+      "00555000"
+    },
+    { // Frame 10
+      "00111000",
+      "01000100",
+      "01000100",
+      "01000100",
+      "00111000"
+    },
+    { // Frame 11
+      "00001000",
+      "00000100",
+      "00000100",
+      "00000100",
+      "00001000"
+    },
+    { // Frame 12
+      "00011000",
+      "00001100",
+      "00001100",
+      "00001100",
+      "00011000"
+    },
+    { // Frame 13
+      "00111000",
+      "00011100",
+      "00011100",
+      "00011100",
+      "00111000"
+    },
+    { // Frame 14
+      "00111000",
+      "00111100",
+      "00111100",
+      "00111100",
+      "00111000"
+    }
+  };
+  const CRGB eclipseOrange = CRGB(247, 148, 30);
+  const CRGB eclipsePurple = CRGB(197, 167, 207);
+  const CRGB eclipseBlue = CRGB(214, 239, 249);
+  const CRGB eclipseWhite = CRGB::White;
+  const CRGB eclipseYellow = CRGB(255, 242, 0);
+  CRGB currentColor;
+
+  for (int y = 0; y < 5; y++) {
+    for (int x = 0; x < 8; x++) {
+      if (eclipseBitmap[currentFrame][y][x] == '1') {
+        currentColor = eclipseOrange;
+      } else if (eclipseBitmap[currentFrame][y][x] == '2') {
+        currentColor = eclipsePurple;
+      } else if (eclipseBitmap[currentFrame][y][x] == '3') {
+        currentColor = eclipseBlue;
+      } else if (eclipseBitmap[currentFrame][y][x] == '4') {
+        currentColor = eclipseWhite;
+      } else if (eclipseBitmap[currentFrame][y][x] == '5') {
+        currentColor = eclipseYellow;
+      } else {
+        currentColor = CRGB::Black;
+      }
+
+      leds[XY(x, y)] = currentColor;
+      leds[XY(8 + x, y)] = currentColor;
+    }
+  }
+  currentFrame += 1;
+  if (currentFrame == 15) {
+    currentFrame = 0;
+//    effectDelay = 1000;
+  }
 }
 

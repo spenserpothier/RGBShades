@@ -73,7 +73,8 @@ functionList effectList[] = {threeSine,
                              slantBars,
                              scrollTextTwo,
                              colorFill,
-                             sideRain
+                             sideRain,
+                             eclipseMode
                             };
 
 const byte numEffects = (sizeof(effectList)/sizeof(effectList[0]));
