@@ -334,7 +334,12 @@ void eclipseMode() {
   // startup tasks
   if (effectInit == false) {
     effectInit = true;
-    effectDelay = 200;
+    effectDelay = 300;
+    for (byte cy = 0; cy < kMatrixHeight; cy++) {
+      for (byte cx = 0; cx < kMatrixWidth; cx++) {
+        leds[XY(cx, cy)] = CRGB::Black;
+      }
+    }
   }
 
   
@@ -410,40 +415,40 @@ void eclipseMode() {
       "00555000"
     },
     { // Frame 10
-      "00111000",
-      "01000100",
-      "01000100",
-      "01000100",
-      "00111000"
-    },
-    { // Frame 11
       "00001000",
       "00000100",
       "00000100",
       "00000100",
       "00001000"
     },
-    { // Frame 12
+    { // Frame 11
       "00011000",
       "00001100",
       "00001100",
       "00001100",
       "00011000"
     },
-    { // Frame 13
+    { // Frame 12
       "00111000",
       "00011100",
       "00011100",
       "00011100",
       "00111000"
     },
-    { // Frame 14
+    { // Frame 13
       "00111000",
       "00111100",
       "00111100",
       "00111100",
       "00111000"
-    }
+    },
+    { // Frame 14
+      "00111000",
+      "01111100",
+      "01111100",
+      "01111100",
+      "00111000"
+    },
   };
   const CRGB eclipseOrange = CRGB(247, 148, 30);
   const CRGB eclipsePurple = CRGB(197, 167, 207);
@@ -469,13 +474,12 @@ void eclipseMode() {
       }
 
       leds[XY(x, y)] = currentColor;
-      leds[XY(8 + x, y)] = currentColor;
+      leds[XY(9 + x, y)] = currentColor;
     }
   }
   currentFrame += 1;
   if (currentFrame == 15) {
     currentFrame = 0;
-//    effectDelay = 1000;
   }
 }
 
